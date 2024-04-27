@@ -9,12 +9,12 @@ class ofxTinyEXR {
     
 public:
     
-    bool loadImage(ofFloatImage & img, string filepath);
-    //bool loadImageExp(ofFloatImage & img, string filepath);
+    static bool loadImage(ofFloatPixels & img, string filepath);
+    //static bool loadImageExp(ofFloatImage & img, string filepath);
     
-    bool saveImage( const ofFloatImage & img, string filepath);
+    static bool saveImage( const ofFloatPixels & img, string filepath);
     
-    bool saveHDRImage( const ofFloatImage & img, string filepath);
+    static bool saveHDRImage( const ofFloatPixels & img, string filepath);
 };
 
 

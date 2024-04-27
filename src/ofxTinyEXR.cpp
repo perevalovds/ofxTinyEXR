@@ -9,7 +9,7 @@
 
 // loads OF_IMAGE_GRAYSCALE, OF_IMAGE_COLOR, OF_IMAGE_COLOR_ALPHA
 
-bool ofxTinyEXR::loadImage(ofFloatImage & image, const string filepath){
+bool ofxTinyEXR::loadImage(ofFloatPixels & image, const string filepath){
     
     string filepath_full =ofToDataPath(filepath);
     const char * input = filepath_full.c_str();
@@ -40,8 +40,8 @@ bool ofxTinyEXR::loadImage(ofFloatImage & image, const string filepath){
         return false;
     }
     
-    cout << "file " << filepath << endl;
-    cout << "channels " << exr_header.num_channels << endl;
+    // cout << "file " << filepath << endl;
+    // cout << "channels " << exr_header.num_channels << endl;
     
     // Read HALF channel as FLOAT.
     for (int i = 0; i < exr_header.num_channels; i++) {
@@ -283,8 +283,7 @@ bool ofxTinyEXR::loadImage(ofFloatImage & image, const string filepath){
     //image.allocate( exr_image.width, exr_image.height, imgType);
     */
      
-    image.getPixels().setFromPixels(pixels, exr_image.width, exr_image.height, exr_header.num_channels);
-    image.update();
+    image.setFromPixels(pixels, exr_image.width, exr_image.height, exr_header.num_channels);
     
     // 4. Free image data
     FreeEXRImage(&exr_image);
@@ -297,7 +296,7 @@ bool ofxTinyEXR::loadImage(ofFloatImage & image, const string filepath){
  
  // converts all images to OF_IMAGE_COLOR_ALPHA
  
- bool ofxTinyEXR::loadImage(ofFloatImage & image, const string filepath){
+ bool ofxTinyEXR::loadImage(ofFloatPixels & image, const string filepath){
  
      string filepath_full =ofToDataPath(filepath);
      const char * input = filepath_full.c_str();
@@ -335,15 +334,15 @@ bool ofxTinyEXR::loadImage(ofFloatImage & image, const string filepath){
  }
  */
 
-bool ofxTinyEXR::saveImage( const ofFloatImage & img, string filepath){
+bool ofxTinyEXR::saveImage( const ofFloatPixels & img, string filepath){
     
     string filepath_full =ofToDataPath(filepath);
     const char * filename = filepath_full.c_str();
     
-    const float * data = img.getPixels().getData();
-    int width = img.getPixels().getWidth();
-    int height = img.getPixels().getHeight();
-    int components = img.getPixels().getNumChannels();
+    const float * data = img.getData();
+    int width = img.getWidth();
+    int height = img.getHeight();
+    int components = img.getNumChannels();
     int save_as_fp16 = 0; // save as float, not half
     
     const char* err = NULL; // or nullptr in C++11
@@ -361,15 +360,15 @@ bool ofxTinyEXR::saveImage( const ofFloatImage & img, string filepath){
     return true;
 }
 
-bool ofxTinyEXR::saveHDRImage( const ofFloatImage & img, string filepath){
+bool ofxTinyEXR::saveHDRImage( const ofFloatPixels & img, string filepath){
     
     string filepath_full =ofToDataPath(filepath);
     const char * filename = filepath_full.c_str();
     
-    const float * data = img.getPixels().getData();
-    int width = img.getPixels().getWidth();
-    int height = img.getPixels().getHeight();
-    int components = img.getPixels().getNumChannels();
+    const float * data = img.getData();
+    int width = img.getWidth();
+    int height = img.getHeight();
+    int components = img.getNumChannels();
     
     ofLogNotice() << components << " components";
     
